@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="be" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ШЛЯХ — Твой шлях да сваіх грошай</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              accent: '#00FF87', // Electric Neon/Mint accent
+              'accent-hover': '#00E076',
+              bg: '#FFFFFF',
+              card: '#FBFBFB',
+              border: '#EEEEEE',
+              dark: '#0A0A0A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFFFFF;
+      color: #0A0A0A;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 3D Card Stage and Styles */
+    .perspective-container {
+      perspective: 1200px;
+    }
+
+    .card-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease-out;
+      will-change: transform;
+    }
+
+    .card-face {
+      backface-visibility: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Card Themes */
+    .card-theme-minimal {
+      background: linear-gradient(135deg, #18181B 0%, #09090B 100%);
+      color: #FFFFFF;
+    }
+    .card-theme-neon {
+      background: linear-gradient(135deg, #052e16 0%, #0A0A0A 100%);
+      border-color: #00FF87 !important;
+      color: #00FF87;
+    }
+    .card-theme-gradient {
+      background: linear-gradient(135deg, #27272A 0%, #000000 50%, #18181B 100%);
+      color: #FFFFFF;
+    }
+    .card-theme-matte {
+      background: #121212;
+      color: #E4E4E7;
+      border-color: #27272A !important;
+    }
+    .card-theme-mirror {
+      background: linear-gradient(135deg, #E4E4E7 0%, #A1A1AA 50%, #F4F4F5 100%);
+      color: #09090B;
+      border-color: #FFFFFF !important;
+    }
+
+    /* Accordion styles */
+    details summary::-webkit-details-marker {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-white text-brand-dark antialiased selection:bg-brand-accent selection:text-black">
+
+  <!-- 1. ШАПКА -->
+  <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-brand-border h-16 transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="font-bold text-xl tracking-tight flex items-center gap-2">
+        <span class="w-3 h-3 bg-brand-accent inline-block rounded-full"></span>
+        ШЛЯХ
+      </a>
+
+      <!-- Language Switcher -->
+      <div class="flex items-center gap-1 bg-zinc-100 p-1 rounded-full text-xs font-medium text-zinc-500 border border-zinc-200">
+        <button onclick="setLang('by')" id="btn-by" class="px-3 py-1 rounded-full transition-all">BY</button>
+        <button onclick="setLang('ru')" id="btn-ru" class="px-3 py-1 rounded-full transition-all">RU</button>
+        <button onclick="setLang('en')" id="btn-en" class="px-3 py-1 rounded-full transition-all">EN</button>
+      </div>
+
+      <!-- CTA -->
+      <a href="#cta" class="bg-brand-dark text-white text-xs font-medium px-5 py-2.5 rounded-full hover:bg-zinc-800 transition-colors" data-i18n="nav.open">
+        Адкрыць рахунак
+      </a>
+    </div>
+  </header>
+
+  <main class="pt-16">
+    <!-- 2. HERO -->
+    <section class="py-24 md:py-32 border-b border-brand-border">
+      <div class="max-w-5xl mx-auto px-6 text-center">
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.1] mb-6" data-i18n="hero.title">
+          Новы слой поверх вашага банка
+        </h1>
+        <p class="text-lg md:text-xl text-zinc-600 font-normal max-w-2xl mx-auto mb-10 leading-relaxed" data-i18n="hero.subtitle">
+          Падключыце свой існуючы рахунак і атрымайце магчымасці, якіх пакуль няма ў беларускіх банках.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <a href="#cta" class="w-full sm:w-auto bg-brand-dark text-white text-sm font-medium px-8 py-4 rounded-full hover:bg-zinc-800 transition-colors" data-i18n="hero.btn1">
+            Адкрыць рахунак
+          </a>
+          <a href="#demo-3d" class="w-full sm:w-auto border border-zinc-300 text-brand-dark text-sm font-medium px-8 py-4 rounded-full hover:bg-zinc-50 transition-colors" data-i18n="hero.btn2">
+            Паглядзець дэма
+          </a>
+        </div>
+        <p class="text-xs text-zinc-400 uppercase tracking-widest font-mono" data-i18n="hero.note">
+          Не банк. Слой поверх банка.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. БЛОК С 3D-КАРТАЙ -->
+    <section id="demo-3d" class="py-24 border-b border-brand-border bg-brand-card overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="card.title">Твая карта. Твой дызайн. Твой нумар.</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="card.subtitle">Пацягніце карту мышшу або пальцам, каб павярнуць яе ў 3D</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <!-- 3D Stage -->
+          <div class="lg:col-span-8 flex justify-center perspective-container py-12 select-none touch-none">
+            <div id="card3d" class="card-3d card-theme-minimal w-[320px] sm:w-[380px] h-[200px] sm:h-[240px] rounded-2xl p-6 relative shadow-2xl flex flex-col justify-between cursor-grab active:cursor-grabbing border">
+              
+              <div class="flex justify-between items-start">
+                <span class="font-bold text-lg tracking-wider">ШЛЯХ</span>
+                <!-- Chip -->
+                <div class="w-10 h-8 rounded border border-zinc-500/40 bg-zinc-400/20 flex items-center justify-center">
+                  <div class="w-6 h-4 border-t border-b border-zinc-500/40"></div>
+                </div>
+              </div>
+
+              <div class="my-auto">
+                <div id="card-number" class="font-mono text-xl sm:text-2xl tracking-widest transition-all duration-300">
+                  4532 •••• •••• 8892
+                </div>
+              </div>
+
+              <div class="flex justify-between items-end text-xs font-mono opacity-80">
+                <div>
+                  <div class="text-[9px] uppercase tracking-wider text-zinc-400" data-i18n="card.holder">Уладальнік</div>
+                  <div class="font-medium tracking-wide">MATVEI KOBRUSEV</div>
+                </div>
+                <div>
+                  <div class="text-[9px] uppercase tracking-wider text-zinc-400">EXPIRES</div>
+                  <div>08/28</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Card Controls -->
+          <div class="lg:col-span-4 space-y-8">
+            <div>
+              <label class="block text-xs font-mono text-zinc-400 uppercase tracking-wider mb-4" data-i18n="card.selectDesign">Выберыце дызайн</label>
+              <div class="grid grid-cols-5 gap-2">
+                <button onclick="changeTheme('minimal')" class="h-10 rounded-lg bg-zinc-900 border border-zinc-700 hover:ring-2 ring-brand-accent transition-all" title="Minimal"></button>
+                <button onclick="changeTheme('neon')" class="h-10 rounded-lg bg-emerald-950 border border-brand-accent hover:ring-2 ring-brand-accent transition-all" title="Neon"></button>
+                <button onclick="changeTheme('gradient')" class="h-10 rounded-lg bg-gradient-to-r from-zinc-800 to-black border border-zinc-600 hover:ring-2 ring-brand-accent transition-all" title="Gradient"></button>
+                <button onclick="changeTheme('matte')" class="h-10 rounded-lg bg-zinc-800 border border-zinc-700 hover:ring-2 ring-brand-accent transition-all" title="Matte"></button>
+                <button onclick="changeTheme('mirror')" class="h-10 rounded-lg bg-zinc-300 border border-white hover:ring-2 ring-brand-accent transition-all" title="Mirror"></button>
+              </div>
+            </div>
+
+            <div class="pt-4 border-t border-brand-border">
+              <button onclick="generateNewCardNumber()" class="w-full bg-white border border-brand-dark text-brand-dark font-medium px-6 py-3 rounded-full hover:bg-zinc-100 transition-colors text-sm flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                <span data-i18n="card.changeNum">Змяніць нумар</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ТРИ КИТА -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div class="p-8 border border-brand-border rounded-2xl bg-brand-card hover:border-zinc-400 transition-colors">
+            <div class="w-10 h-10 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-brand-dark font-mono font-bold">01</div>
+            <h3 class="text-xl font-bold mb-3" data-i18n="pillars.p1Title">Змена нумара ў адзін тап</h3>
+            <p class="text-zinc-600 text-sm leading-relaxed" data-i18n="pillars.p1Desc">Мяняйце рэквізіты карты імгненна пры найменшай падазроны на выцек даных.</p>
+          </div>
+          <!-- Card 2 -->
+          <div class="p-8 border border-brand-border rounded-2xl bg-brand-card hover:border-zinc-400 transition-colors">
+            <div class="w-10 h-10 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-brand-dark font-mono font-bold">02</div>
+            <h3 class="text-xl font-bold mb-3" data-i18n="pillars.p2Title">Свой QR для прыёму грошай</h3>
+            <p class="text-zinc-600 text-sm leading-relaxed" data-i18n="pillars.p2Desc">Персанальны QR-код для імгненных пераводаў без камісій і складаных рэквізітаў.</p>
+          </div>
+          <!-- Card 3 -->
+          <div class="p-8 border border-brand-border rounded-2xl bg-brand-card hover:border-zinc-400 transition-colors">
+            <div class="w-10 h-10 bg-zinc-100 rounded-full flex items-center justify-center mb-6 text-brand-dark font-mono font-bold">03</div>
+            <h3 class="text-xl font-bold mb-3" data-i18n="pillars.p3Title">AI-памочнік</h3>
+            <p class="text-zinc-600 text-sm leading-relaxed" data-i18n="pillars.p3Desc">Разумее свабодную мову, аналізуе выдаткі і кіруе падпіскамі аўтаматычна.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. КАРТЫ (блок с фичами) -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-xl mb-16">
+          <h2 class="text-3xl font-bold mb-4" data-i18n="cardsFeature.title">Поўны кантроль над картамі</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="cardsFeature.subtitle">Стварайце асобныя карты пад кожную задачу за секунды.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-8 border border-brand-border rounded-2xl flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold mb-2" data-i18n="cardsFeature.f1Title">Змена нумара за 3 секунды</h3>
+              <p class="text-zinc-600 text-sm mb-6" data-i18n="cardsFeature.f1Desc">Пасля куплі на сумнеўным сайце можна замяніць нумар карты ў адзін клік. Стары нумар перастане працаваць.</p>
+            </div>
+            <div class="text-xs font-mono text-zinc-400 border-t border-zinc-100 pt-4">SECURITY FIRST</div>
+          </div>
+
+          <div class="p-8 border border-brand-border rounded-2xl flex flex-col justify-between">
+            <div>
+              <h3 class="text-lg font-bold mb-2" data-i18n="cardsFeature.f2Title">Кастамы дызайн</h3>
+              <p class="text-zinc-600 text-sm mb-6" data-i18n="cardsFeature.f2Desc">Загружайце свае фота, выбірайце градыенты або дадавайце унікальны нікнэйм на фізічную карту.</p>
+            </div>
+            <div class="text-xs font-mono text-zinc-400 border-t border-zinc-100 pt-4">PERSONALIZATION</div>
+          </div>
+
+          <div class="md:col-span-2 p-8 border border-brand-border rounded-2xl bg-zinc-50">
+            <h3 class="text-lg font-bold mb-2" data-i18n="cardsFeature.f3Title">Віртуальныя карты пад кожную задачу</h3>
+            <p class="text-zinc-600 text-sm mb-6 max-w-xl" data-i18n="cardsFeature.f3Desc">Асобная карта для рэгулярных падпісак, асобная для аднаразовых пакупак, для дзіцяці або для камандных выдаткаў з жорсткімі лімітамі.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-white border border-zinc-200 px-3 py-1.5 rounded-full font-mono">#підпіскі</span>
+              <span class="text-xs bg-white border border-zinc-200 px-3 py-1.5 rounded-full font-mono">#шопінг</span>
+              <span class="text-xs bg-white border border-zinc-200 px-3 py-1.5 rounded-full font-mono">#дзеці</span>
+              <span class="text-xs bg-white border border-zinc-200 px-3 py-1.5 rounded-full font-mono">#каманда</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. QR И ПОДПИСКИ -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          
+          <!-- Live QR Generator -->
+          <div class="p-8 border border-brand-border rounded-2xl bg-brand-card">
+            <h3 class="text-2xl font-bold mb-2" data-i18n="qr.title">Інтэрактыўны QR-генератар</h3>
+            <p class="text-zinc-600 text-sm mb-8" data-i18n="qr.subtitle">Увядзіце суму і прызначэнне, каб згенераваць кошт</p>
+
+            <div class="space-y-4 mb-8">
+              <div>
+                <label class="block text-xs font-mono text-zinc-500 mb-1" data-i18n="qr.labelSum">Сума (BYN)</label>
+                <input type="number" id="qr-amount" value="50" oninput="updateQR()" class="w-full border border-zinc-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-brand-dark">
+              </div>
+              <div>
+                <label class="block text-xs font-mono text-zinc-500 mb-1" data-i18n="qr.labelPurpose">Прызначэнне плацяжу</label>
+                <input type="text" id="qr-desc" value="Кансультацыя" oninput="updateQR()" class="w-full border border-zinc-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-brand-dark">
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center p-6 bg-white border border-zinc-200 rounded-xl">
+              <canvas id="qr-canvas" class="w-40 h-40"></canvas>
+              <div id="qr-text" class="mt-4 text-xs font-mono text-zinc-500 text-center">shlyakh.by/pay/50BYN</div>
+            </div>
+          </div>
+
+          <!-- Subscriptions -->
+          <div class="flex flex-col justify-center">
+            <h3 class="text-2xl font-bold mb-4" data-i18n="sub.title">Аўтаматычныя падпіскі</h3>
+            <p class="text-zinc-600 text-sm mb-6 leading-relaxed" data-i18n="sub.desc">
+              Стварайце рэгулярныя плацяжы на любую суму. Кліент падпісваецца адзін раз — грошы спісваюцца аўтаматычна. Нагадванне за 3 дні да спісання. Наладзьце прыпыненне ў адзін клік.
+            </p>
+            <div class="space-y-4">
+              <div class="p-4 border-l-2 border-brand-dark bg-zinc-50 text-sm">
+                <span class="font-bold" data-i18n="sub.targetTitle">Для каго:</span>
+                <span class="text-zinc-600" data-i18n="sub.targetDesc"> Трэнеры, онлайн-курсы, закрытыя Telegram-каналы, арэнда памяшканняў.</span>
+              </div>
+              <ul class="text-sm text-zinc-600 space-y-2 font-mono">
+                <li>✓ 0,8% камісія за эквайрынг</li>
+                <li>✓ Аўтаматычнае паведамленне за 3 дні</li>
+                <li>✓ Паўза падпіскі без страты даных</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. AI-ПОМОЩНИК (демо-чат) -->
+    <section class="py-24 border-b border-brand-border bg-brand-card">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold mb-3" data-i18n="ai.title">AI-памочнік</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="ai.subtitle">Не чат-бот з кнопкамі. Собеседнік, які разумее фінансы.</p>
+        </div>
+
+        <div class="border border-brand-border rounded-2xl bg-white p-6 shadow-sm">
+          <!-- Chat Messages Area -->
+          <div id="chat-box" class="space-y-4 min-h-[220px] max-h-[300px] overflow-y-auto mb-6 p-2 text-sm">
+            <div class="flex gap-3">
+              <div class="w-7 h-7 rounded-full bg-brand-dark text-white text-xs flex items-center justify-center font-bold">AI</div>
+              <div class="bg-zinc-100 p-3 rounded-2xl max-w-[80%] text-zinc-800" data-i18n="ai.welcomeMsg">
+                Вітаю! Я сачу за вашымі фінансамі. Чым магу дапамагчы?
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            <button onclick="sendAiPrompt('save')" class="text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-3 py-1.5 rounded-full border border-zinc-200 transition-colors" data-i18n="ai.btn1">
+              "Адкладзі 100 рублёў"
+            </button>
+            <button onclick="sendAiPrompt('subs')" class="text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-3 py-1.5 rounded-full border border-zinc-200 transition-colors" data-i18n="ai.btn2">
+              "Якія падпіскі актыўныя?"
+            </button>
+            <button onclick="sendAiPrompt('spend')" class="text-xs bg-zinc-100 hover:bg-zinc-200 text-zinc-700 px-3 py-1.5 rounded-full border border-zinc-200 transition-colors" data-i18n="ai.btn3">
+              "Колькі выдаткавана за тыдзень?"
+            </button>
+          </div>
+
+          <!-- Input Area -->
+          <div class="flex gap-2">
+            <input type="text" id="ai-input" placeholder="Напішыце каманду..." class="flex-1 border border-zinc-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-dark">
+            <button onclick="handleAiSubmit()" class="bg-brand-dark text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-zinc-800 transition-colors" data-i18n="ai.send">
+              Адправіць
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. УМНОЕ -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-xl mb-16">
+          <h2 class="text-3xl font-bold mb-4" data-i18n="smart.title">Разумныя фінансавыя функцыі</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="smart.subtitle">Алгарытмы, якія эканомяць ваш час і грошы</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="p-6 border border-brand-border rounded-xl">
+            <div class="font-mono text-xs text-zinc-400 mb-2">01 / CASHBACK</div>
+            <h3 class="font-bold text-base mb-2" data-i18n="smart.f1Title">Кэшбэк рэальнымі грашыма</h3>
+            <p class="text-xs text-zinc-600 leading-relaxed" data-i18n="smart.f1Desc">Выбар да 4 катэгорый кожны месяц. Выплаты на рахунак без балаў і бонусаў.</p>
+          </div>
+
+          <div class="p-6 border border-brand-border rounded-xl">
+            <div class="font-mono text-xs text-zinc-400 mb-2">02 / CATEGORIES</div>
+            <h3 class="font-bold text-base mb-2" data-i18n="smart.f2Title">Аўтакатэгарызацыя</h3>
+            <p class="text-xs text-zinc-600 leading-relaxed" data-i18n="smart.f2Desc">Разумнае групаванне выдаткаў і імгненныя апавяшчэнні пра анамальныя траты.</p>
+          </div>
+
+          <div class="p-6 border border-brand-border rounded-xl">
+            <div class="font-mono text-xs text-zinc-400 mb-2">03 / RISK MONITOR</div>
+            <h3 class="font-bold text-base mb-2" data-i18n="smart.f3Title">Маніторынг рызык</h3>
+            <p class="text-xs text-zinc-600 leading-relaxed" data-i18n="smart.f3Desc">Сістэма папярэджвае пра падазроныя транзакцыі і прапануе заблакаваць карту ў 1 клік.</p>
+          </div>
+
+          <div class="p-6 border border-brand-border rounded-xl">
+            <div class="font-mono text-xs text-zinc-400 mb-2">04 / VOICE</div>
+            <h3 class="font-bold text-base mb-2" data-i18n="smart.f4Title">Галасавое кіраванне</h3>
+            <p class="text-xs text-zinc-600 leading-relaxed" data-i18n="smart.f4Desc">Пераводзьце грошы і правярайце баланс галасавымі камандамі.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. ПЛАТЕЖИ -->
+    <section class="py-24 border-b border-brand-border bg-brand-card">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-xl mb-16">
+          <h2 class="text-3xl font-bold mb-4" data-i18n="payments.title">Міжнародныя плацяжы і бізнес</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="payments.subtitle">Лёгкая праца з замежнымі фрыланс-платформамі і фактарынгам</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 border border-brand-border rounded-2xl bg-white">
+            <h3 class="font-bold text-lg mb-3" data-i18n="payments.p1Title">Крос-бордэр прыём</h3>
+            <p class="text-sm text-zinc-600 mb-6" data-i18n="payments.p1Desc">Прамое залічэнне сродкаў з Upwork, Fiverr, GitHub Sponsors і Payoneer.</p>
+            <div class="text-xs font-mono text-zinc-400">0,8% FEE</div>
+          </div>
+
+          <div class="p-8 border border-brand-border rounded-2xl bg-white">
+            <h3 class="font-bold text-lg mb-3" data-i18n="payments.p2Title">Фактарынг па інвойсу</h3>
+            <p class="text-sm text-zinc-600 mb-6" data-i18n="payments.p2Desc">Оплата да 70% ад сумы інвойсу адразу. Фіксаваная стаўка 1,5%.</p>
+            <div class="text-xs font-mono text-zinc-400">1.5% FIXED RATE</div>
+          </div>
+
+          <div class="p-8 border border-brand-border rounded-2xl bg-white">
+            <h3 class="font-bold text-lg mb-3" data-i18n="payments.p3Title">BNPL Растэрміноўка</h3>
+            <p class="text-sm text-zinc-600 mb-6" data-i18n="payments.p3Desc">Оплата пакупкі чатырма роўнымі часткамі. Без працэнтаў і камісій.</p>
+            <div class="text-xs font-mono text-zinc-400">0% OVERPAYMENT</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. ИНВЕСТИЦИИ -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-3xl font-bold mb-4" data-i18n="invest.title">Мікра-інвестыцыі ад 10 рублёў</h2>
+            <p class="text-zinc-600 text-sm leading-relaxed mb-6" data-i18n="invest.desc">
+              Аўтаматычнае акругленне кожнай пакупкі. Рэшта накіроўваецца ў абраны інвестыцыйны партфель. Паслугі аказваюцца праз ліцэнзаванага партнёра.
+            </p>
+            <div class="flex items-center gap-6 font-mono text-xs text-zinc-500 border-t border-zinc-100 pt-6">
+              <div><span class="text-brand-dark font-bold text-base block">10 BYN</span> МІНІМУМ</div>
+              <div><span class="text-brand-dark font-bold text-base block">AUTO</span> АКРУГЛЕННЕ</div>
+            </div>
+          </div>
+          <div class="p-8 border border-brand-border rounded-2xl bg-zinc-50 font-mono text-xs text-zinc-600 space-y-3">
+            <div class="flex justify-between border-b border-zinc-200 pb-2">
+              <span>Пакупка кавы</span>
+              <span>4.20 BYN</span>
+            </div>
+            <div class="flex justify-between border-b border-zinc-200 pb-2">
+              <span>Акругленне да 5.00 BYN</span>
+              <span class="text-emerald-600 font-bold">+0.80 BYN</span>
+            </div>
+            <div class="flex justify-between pt-2">
+              <span>Інвеставана ў фонд</span>
+              <span class="font-bold">0.80 BYN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. DEVELOPER API -->
+    <section class="py-24 border-b border-brand-border bg-brand-dark text-white">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <span class="text-xs font-mono text-brand-accent tracking-widest uppercase block mb-3">FOR DEVELOPERS</span>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="api.title">Распрацоўвайце поверх ШЛЯХ API</h2>
+            <p class="text-zinc-400 text-sm leading-relaxed mb-8" data-i18n="api.desc">
+              Вебхукі на ўваходныя плацяжы, SDK для TypeScript, Java і Python, тэставая песачніца (sandbox) для распрацоўшчыкаў.
+            </p>
+            <a href="#docs" class="inline-block bg-brand-accent text-black font-medium text-sm px-6 py-3 rounded-full hover:bg-brand-accent-hover transition-colors" data-i18n="api.btn">
+              Чытаць дакументацыю
+            </a>
+          </div>
+
+          <!-- Code Snippet -->
+          <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 font-mono text-xs overflow-x-auto text-zinc-300">
+            <div class="flex items-center gap-2 mb-4 text-zinc-500 border-b border-zinc-800 pb-3">
+              <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+              <span class="ml-2 text-zinc-400">shlyakh-sdk.ts</span>
+            </div>
+<pre><code><span class="text-purple-400">import</span> { ShlyakhClient } <span class="text-purple-400">from</span> <span class="text-emerald-400">'@shlyakh/sdk'</span>;
+
+<span class="text-purple-400">const</span> client = <span class="text-purple-400">new</span> ShlyakhClient({
+  apiKey: process.env.SHLYAKH_API_KEY
+});
+
+<span class="text-zinc-500">// Стварэнне падпіскі</span>
+<span class="text-purple-400">const</span> sub = <span class="text-purple-400">await</span> client.subscriptions.create({
+  amount: <span class="text-orange-400">50.00</span>,
+  currency: <span class="text-emerald-400">'BYN'</span>,
+  interval: <span class="text-emerald-400">'monthly'</span>
+});</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. КАК ЭТО РАБОТАЕТ -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-xl mx-auto mb-16">
+          <h2 class="text-3xl font-bold mb-3" data-i18n="how.title">Як гэта працуе</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="how.subtitle">Усяго 3 крокі да пачатку карыстання</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="text-center p-6">
+            <div class="w-12 h-12 rounded-full border border-brand-dark flex items-center justify-center mx-auto mb-6 font-mono text-lg font-bold">1</div>
+            <h3 class="font-bold text-lg mb-2" data-i18n="how.step1Title">Спампуйце дадатак</h3>
+            <p class="text-xs text-zinc-600" data-i18n="how.step1Desc">Даступна для iOS і Android. Рэгістрацыя па нумары тэлефона.</p>
+          </div>
+
+          <div class="text-center p-6">
+            <div class="w-12 h-12 rounded-full border border-brand-dark flex items-center justify-center mx-auto mb-6 font-mono text-lg font-bold">2</div>
+            <h3 class="font-bold text-lg mb-2" data-i18n="how.step2Title">Падключыце свой банк</h3>
+            <p class="text-xs text-zinc-600" data-i18n="how.step2Desc">Бяспечнае злучэнне з любым беларускім банкам праз API.</p>
+          </div>
+
+          <div class="text-center p-6">
+            <div class="w-12 h-12 rounded-full border border-brand-dark flex items-center justify-center mx-auto mb-6 font-mono text-lg font-bold">3</div>
+            <h3 class="font-bold text-lg mb-2" data-i18n="how.step3Title">Атрымайце ўсе функцыі</h3>
+            <p class="text-xs text-zinc-600" data-i18n="how.step3Desc">Карыстайцеся новымі магчымасцямі без змены свайго банка.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. БЯСПЕКА -->
+    <section class="py-20 border-b border-brand-border bg-zinc-50">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-2xl font-bold mb-4" data-i18n="sec.title">Бяспека стандартаў банкінгу</h2>
+        <p class="text-sm text-zinc-600 leading-relaxed max-w-2xl mx-auto" data-i18n="sec.desc">
+          Падклучэнне ажыццяўляецца праз зашыфраванае злучэнне. Вашы персанальныя даныя не захоўваюцца без вашага дазволу. Выкарыстоўваецца скразное шыфраванне AES-256 і трохфактарная аўтэнтыфікацыя.
+        </p>
+      </div>
+    </section>
+
+    <!-- 14. ТАРИФЫ -->
+    <section class="py-24 border-b border-brand-border">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center max-w-xl mx-auto mb-16">
+          <h2 class="text-3xl font-bold mb-3" data-i18n="pricing.title">Тарыфныя планы</h2>
+          <p class="text-zinc-600 text-sm" data-i18n="pricing.subtitle">Празрыстыя ўмовы без прыхаваных камісій</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Free -->
+          <div class="p-8 border border-brand-border rounded-2xl flex flex-col justify-between">
+            <div>
+              <h3 class="font-bold text-xl mb-1">Free</h3>
+              <p class="text-xs text-zinc-500 mb-6" data-i18n="pricing.freeFor">Дляасабістага карыстання</p>
+              <div class="text-3xl font-bold font-mono mb-6">0 BYN<span class="text-xs font-normal text-zinc-500"> / мес</span></div>
+              <ul class="text-xs text-zinc-600 space-y-3 font-mono border-t border-zinc-100 pt-6 mb-8">
+                <li>✓ 1 віртуальная карта</li>
+                <li>✓ Базавы AI-памочнік</li>
+                <li>✓ QR-плацяжы</li>
+              </ul>
+            </div>
+            <a href="#cta" class="w-full text-center border border-brand-dark text-brand-dark font-medium text-xs py-3 rounded-full hover:bg-zinc-100 transition-colors" data-i18n="pricing.choose">Выбраць</a>
+          </div>
+
+          <!-- Pro -->
+          <div class="p-8 border-2 border-brand-dark rounded-2xl flex flex-col justify-between relative bg-white shadow-sm">
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-dark text-white text-[10px] font-mono px-3 py-0.5 rounded-full uppercase">POPULAR</span>
+            <div>
+              <h3 class="font-bold text-xl mb-1">Pro</h3>
+              <p class="text-xs text-zinc-500 mb-6" data-i18n="pricing.proFor">Для фрылансераў і прафесіяналаў</p>
+              <div class="text-3xl font-bold font-mono mb-6">19 BYN<span class="text-xs font-normal text-zinc-500"> / мес</span></div>
+              <ul class="text-xs text-zinc-600 space-y-3 font-mono border-t border-zinc-100 pt-6 mb-8">
+                <li>✓ Неабмежавана віртуальных карт</li>
+                <li>✓ Змена нумара карты ў 1 тап</li>
+                <li>✓ Крос-бордэр прыём</li>
+                <li>✓ Падпіскі і аўтаплацяжы</li>
+              </ul>
+            </div>
+            <a href="#cta" class="w-full text-center bg-brand-dark text-white font-medium text-xs py-3 rounded-full hover:bg-zinc-800 transition-colors" data-i18n="pricing.choose">Выбраць</a>
+          </div>
+
+          <!-- Team -->
+          <div class="p-8 border border-brand-border rounded-2xl flex flex-col justify-between">
+            <div>
+              <h3 class="font-bold text-xl mb-1">Team</h3>
+              <p class="text-xs text-zinc-500 mb-6" data-i18n="pricing.teamFor">Для малага бізнесу і каманд</p>
+              <div class="text-3xl font-bold font-mono mb-6">49 BYN<span class="text-xs font-normal text-zinc-500"> / мес</span></div>
+              <ul class="text-xs text-zinc-600 space-y-3 font-mono border-t border-zinc-100 pt-6 mb-8">
+                <li>✓ Доступ да Developer API</li>
+                <li>✓ Фактарынг інвойсаў</li>
+                <li>✓ Корпаратыўныя карты</li>
+                <li>✓ Персанальны менеджэр</li>
+              </ul>
+            </div>
+            <a href="#cta" class="w-full text-center border border-brand-dark text-brand-dark font-medium text-xs py-3 rounded-full hover:bg-zinc-100 transition-colors" data-i18n="pricing.choose">Выбраць</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 15. FAQ -->
+    <section class="py-24 border-b border-brand-border bg-brand-card">
+      <div class="max-w-3xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-12 text-center" data-i18n="faq.title">Часта задаваныя пытанні</h2>
+
+        <div class="space-y-4">
+          <!-- Item 1 -->
+          <details class="group border border-brand-border rounded-xl bg-white p-6 [&_summary::-webkit-details-marker]:none">
+            <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none">
+              <span data-i18n="faq.q1">Як падключыць сваю карту або банк?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs text-zinc-600 leading-relaxed" data-i18n="faq.a1">
+              У дадатку ШЛЯХ выберыце ваш банк са спісу і аўтарызуйцеся праз афіцыйны API. Гэта займае каля 1 хвіліны.
+            </p>
+          </details>
+
+          <!-- Item 2 -->
+          <details class="group border border-brand-border rounded-xl bg-white p-6 [&_summary::-webkit-details-marker]:none">
+            <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none">
+              <span data-i18n="faq.q2">Ці бяспечна гэта?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs text-zinc-600 leading-relaxed" data-i18n="faq.a2">
+              Так. Мы выкарыстоўваем шыфраванне банкаўскага ўзроўню. Мы не маем прамога доступу да вашых пароляў і асноўных сродкаў.
+            </p>
+          </details>
+
+          <!-- Item 3 -->
+          <details class="group border border-brand-border rounded-xl bg-white p-6 [&_summary::-webkit-details-marker]:none">
+            <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none">
+              <span data-i18n="faq.q3">Якія камісіі за транзакцыі?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs text-zinc-600 leading-relaxed" data-i18n="faq.a3">
+              Пераводы ўнутры сервісу — 0%. Эквойрынг — 0,8%. Вывад з замежных платформаў — ад 0,8%.
+            </p>
+          </details>
+
+          <!-- Item 4 -->
+          <details class="group border border-brand-border rounded-xl bg-white p-6 [&_summary::-webkit-details-marker]:none">
+            <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none">
+              <span data-i18n="faq.q4">Як працуюць рэгулярныя падпіскі?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs text-zinc-600 leading-relaxed" data-i18n="faq.a4">
+              Вы ствараеце спасылку або QR. Кліент пацвярджае першы плацёж, і далей грошы спісваюцца аўтаматычна з папярэднім апавяшчэннем.
+            </p>
+          </details>
+
+          <!-- Item 5 -->
+          <details class="group border border-brand-border rounded-xl bg-white p-6 [&_summary::-webkit-details-marker]:none">
+            <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none">
+              <span data-i18n="faq.q5">Ці ёсць фізічная карта?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs text-zinc-600 leading-relaxed" data-i18n="faq.a5">
+              Так, вы можаце заказаць фізічную карту з металу або пластику з індывідуальным дызайнам.
+            </p>
+          </details>
+
+          <!-- Item 6 -->
+          <details class="group border border-brand-border rounded-xl bg-white p-6 [&_summary::-webkit-details-marker]:none">
+            <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none">
+              <span data-i18n="faq.q6">Як працуе факторынг?</span>
+              <span class="transition group-open:rotate-180">
+                <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M19 9l-7 7-7-7"/></svg>
+              </span>
+            </summary>
+            <p class="mt-4 text-xs text-zinc-600 leading-relaxed" data-i18n="faq.a6">
+              Вы загружаеце выстаўлены інвойс, сістэма правярае кантрагента і залічвае да 70% сумы адразу пад 1,5%.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 16. ФІНАЛЬНЫ CTA -->
+    <section id="cta" class="py-24 border-b border-brand-border">
+      <div class="max-w-5xl mx-auto px-6 text-center">
+        <h2 class="text-3xl sm:text-5xl font-bold mb-6 tracking-tight" data-i18n="cta.title">Пачніце свой путь да сваіх грошай</h2>
+        <p class="text-zinc-600 text-sm md:text-base max-w-xl mx-auto mb-10" data-i18n="cta.subtitle">Падключэнне займае менш за 2 хвіліны. Без візітаў у офіс.</p>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button class="w-full sm:w-auto bg-brand-dark text-white text-sm font-medium px-8 py-4 rounded-full hover:bg-zinc-800 transition-colors" data-i18n="hero.btn1">
+            Адкрыць рахунак
+          </button>
+          <a href="#demo-3d" class="w-full sm:w-auto border border-zinc-300 text-brand-dark text-sm font-medium px-8 py-4 rounded-full hover:bg-zinc-50 transition-colors" data-i18n="hero.btn2">
+            Паглядзець дэма
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 17. ФУТЭР -->
+  <footer class="py-12 border-t border-brand-border text-xs text-zinc-500">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+        <div class="flex items-center gap-2 font-bold text-brand-dark text-base">
+          <span class="w-2.5 h-2.5 bg-brand-accent inline-block rounded-full"></span>
+          ШЛЯХ
+        </div>
+        <div class="flex flex-wrap gap-6 font-mono">
+          <a href="#" class="hover:text-brand-dark">API</a>
+          <a href="#" class="hover:text-brand-dark">Docs</a>
+          <a href="#" class="hover:text-brand-dark">Security</a>
+          <a href="#" class="hover:text-brand-dark">Terms</a>
+          <a href="#" class="hover:text-brand-dark">Privacy</a>
+        </div>
+      </div>
+
+      <div class="border-t border-zinc-100 pt-8 flex flex-col md:flex-row justify-between gap-4 font-mono text-[11px]">
+        <div>
+          © 2026 SHLYAKH Fintech Platform. Не банк. Слой поверх банка.
+        </div>
+        <div>
+          Minsk, Belarus
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT SECTION: i18n & INTERACTIVITY -->
+  <script>
+    // === I18N DICTIONARY ===
+    const translations = {
+      by: {
+        "nav.open": "Адкрыць рахунак",
+        "hero.title": "Твой шлях да сваіх грошай",
+        "hero.subtitle": "Новы слой поверх вашага банка. Падключыце свой існуючы рахунак і атрымайце магчымасці, якіх пакуль няма ў беларускіх банках.",
+        "hero.btn1": "Адкрыць рахунак",
+        "hero.btn2": "Паглядзець дэма",
+        "hero.note": "Не банк. Слой поверх банка.",
+        "card.title": "Твая карта. Твой дызайн. Твой нумар.",
+        "card.subtitle": "Пацягніце карту мышшу або пальцам, каб павярнуць яе ў 3D",
+        "card.holder": "Уладальнік",
+        "card.selectDesign": "Выберыце дызайн",
+        "card.changeNum": "Змяніць нумар",
+        "pillars.p1Title": "Змена нумара ў адзін тап",
+        "pillars.p1Desc": "Мяняйце рэквізіты карты імгненна пры найменшай падазроны на выцек даных.",
+        "pillars.p2Title": "Свой QR для прыёму грошай",
+        "pillars.p2Desc": "Персанальны QR-код для імгненных пераводаў без камісій і складаных рэквізітаў.",
+        "pillars.p3Title": "AI-памочнік",
+        "pillars.p3Desc": "Разумее свабодную мову, аналізуе выдаткі і кіруе падпіскамі аўтаматычна.",
+        "cardsFeature.title": "Поўны кантроль над картамі",
+        "cardsFeature.subtitle": "Стварайце асобныя карты пад кожную задачу за секунды.",
+        "cardsFeature.f1Title": "Змена нумара за 3 секунды",
+        "cardsFeature.f1Desc": "Пасля куплі на сумнеўным сайце можна замяніць нумар карты ў адзін клік. Стары нумар перастане працаваць.",
+        "cardsFeature.f2Title": "Кастамы дызайн",
+        "cardsFeature.f2Desc": "Загружайце свае фота, выбірайце градыенты або дадавайце унікальны нікнэйм на фізічную карту.",
+        "cardsFeature.f3Title": "Віртуальныя карты пад кожную задачу",
+        "cardsFeature.f3Desc": "Асобная карта для рэгулярных падпісак, асобная для аднаразовых пакупак, для дзіцяці або для камандных выдаткаў з жорсткімі лімітамі.",
+        "qr.title": "Інтэрактыўны QR-генератар",
+        "qr.subtitle": "Увядзіце суму і прызначэнне, каб згенераваць кошт",
+        "qr.labelSum": "Сума (BYN)",
+        "qr.labelPurpose": "Прызначэнне плацяжу",
+        "sub.title": "Аўтаматычныя падпіскі",
+        "sub.desc": "Стварайце рэгулярныя плацяжы на любую суму. Кліент падпісваецца адзін раз — грошы спісваюцца аўтаматычна. Нагадванне за 3 дні да спісання. Наладзьце прыпыненне ў адзін клік.",
+        "sub.targetTitle": "Для каго:",
+        "sub.targetDesc": "Трэнеры, онлайн-курсы, закрытыя Telegram-каналы, арэнда памяшканняў.",
+        "ai.title": "AI-памочнік",
+        "ai.subtitle": "Не чат-бот з кнопкамі. Собеседнік, які разумее фінансы.",
+        "ai.welcomeMsg": "Вітаю! Я сачу за вашымі фінансамі. Чым магу дапамагчы?",
+        "ai.btn1": '"Адкладзі 100 рублёў"',
+        "ai.btn2": '"Якія падпіскі актыўныя?"',
+        "ai.btn3": '"Колькі выдаткавана за тыдзень?"',
+        "ai.send": "Адправіць",
+        "smart.title": "Разумныя фінансавыя функцыі",
+        "smart.subtitle": "Алгарытмы, якія эканомяць ваш час і грошы",
+        "smart.f1Title": "Кэшбэк рэальнымі грашыма",
+        "smart.f1Desc": "Выбар да 4 катэгорый кожны месяц. Выплаты на рахунак без балаў і бонусаў.",
+        "smart.f2Title": "Аўтакатэгарызацыя",
+        "smart.f2Desc": "Разумнае групаванне выдаткаў і імгненныя апавяшчэнні пра анамальныя траты.",
+        "smart.f3Title": "Маніторынг рызык",
+        "smart.f3Desc": "Сістэма папярэджвае пра падазроныя транзакцыі і прапануе заблакаваць карту ў 1 клік.",
+        "smart.f4Title": "Галасавое кіраванне",
+        "smart.f4Desc": "Пераводзьце грошы і правярайце баланс галасавымі камандамі.",
+        "payments.title": "Міжнародныя плацяжы і бізнес",
+        "payments.subtitle": "Лёгкая праца з замежнымі фрыланс-платформамі і фактарынгам",
+        "payments.p1Title": "Крос-бордэр прыём",
+        "payments.p1Desc": "Прамое залічэнне сродкаў з Upwork, Fiverr, GitHub Sponsors і Payoneer.",
+        "payments.p2Title": "Фактарынг па інвойсу",
+        "payments.p2Desc": "Оплата да 70% ад сумы інвойсу адразу. Фіксаваная стаўка 1,5%.",
+        "payments.p3Title": "BNPL Растэрміноўка",
+        "payments.p3Desc": "Оплата пакупкі чатырма роўнымі часткамі. Без працэнтаў і камісій.",
+        "invest.title": "Мікра-інвестыцыі ад 10 рублёў",
+        "invest.desc": "Аўтаматычнае акругленне кожнай пакупкі. Рэшта накіроўваецца ў абраны інвестыцыйны партфель. Паслугі аказваюцца праз ліцэнзаванага партнёра.",
+        "api.title": "Распрацоўвайце поверх ШЛЯХ API",
+        "api.desc": "Вебхукі на ўваходныя плацяжы, SDK для TypeScript, Java і Python, тэставая песачніца (sandbox) для распрацоўшчыкаў.",
+        "api.btn": "Чытаць дакументацыю",
+        "how.title": "Як гэта працуе",
+        "how.subtitle": "Усяго 3 крокі да пачатку карыстання",
+        "how.step1Title": "Спампуйце дадатак",
+        "how.step1Desc": "Даступна для iOS і Android. Рэгістрацыя па нумары тэлефона.",
+        "how.step2Title": "Падключыце свой банк",
+        "how.step2Desc": "Бяспечнае злучэнне з любым беларускім банкам праз API.",
+        "how.step3Title": "Атрымайце ўсе функцыі",
+        "how.step3Desc": "Карыстайцеся новымі магчымасцямі без змены свайго банка.",
+        "sec.title": "Бяспека стандартаў банкінгу",
+        "sec.desc": "Падклучэнне ажыццяўляецца праз зашыфраванае злучэнне. Вашы персанальныя даныя не захоўваюцца без вашага дазволу. Выкарыстоўваецца скразное шыфраванне AES-256 і трохфактарная аўтэнтыфікацыя.",
+        "pricing.title": "Тарыфныя планы",
+        "pricing.subtitle": "Празрыстыя ўмовы без прыхаваных камісій",
+        "pricing.freeFor": "Для асабістага карыстання",
+        "pricing.proFor": "Для фрылансераў і прафесіяналаў",
+        "pricing.teamFor": "Для малага бізнесу і каманд",
+        "pricing.choose": "Выбраць",
+        "faq.title": "Часта задаваныя пытанні",
+        "faq.q1": "Як падключыць сваю карту або банк?",
+        "faq.a1": "У дадатку ШЛЯХ выберыце ваш банк са спісу і аўтарызуйцеся праз афіцыйны API. Гэта займае каля 1 хвіліны.",
+        "faq.q2": "Ці бяспечна гэта?",
+        "faq.a2": "Так. Мы выкарыстоўваем шыфраванне банкаўскага ўзроўню. Мы не маем прамога доступу да вашых пароляў і асноўных сродкаў.",
+        "faq.q3": "Якія камісіі за транзакцыі?",
+        "faq.a3": "Пераводы ўнутры сервісу — 0%. Эквойрынг — 0,8%. Вывад з замежных платформаў — ад 0,8%.",
+        "faq.q4": "Як працуюць рэгулярныя падпіскі?",
+        "faq.a4": "Вы ствараеце спасылку або QR. Кліент пацвярджае першы плацёж, і далей грошы спісваюцца аўтаматычна з папярэднім апавяшчэннем.",
+        "faq.q5": "Ці ёсць фізічная карта?",
+        "faq.a5": "Так, вы можаце заказаць фізічную карту з металу або пластику з індывідуальным дызайнам.",
+        "faq.q6": "Як працуе факторынг?",
+        "faq.a6": "Вы загружаеце выстаўлены інвойс, сістэма правярае кантрагента і залічвае да 70% сумы адразу пад 1,5%.",
+        "cta.title": "Пачніце свой шлях да сваіх грошай",
+        "cta.subtitle": "Падключэнне займае менш за 2 хвіліны. Без візітаў у офіс."
+      },
+      ru: {
+        "nav.open": "Открыть счёт",
+        "hero.title": "Твой путь к своим деньгам",
+        "hero.subtitle": "Новый слой поверх вашего банка. Подключите свой существующий счёт и получите возможности, которых пока нет в белорусских банках.",
+        "hero.btn1": "Открыть счёт",
+        "hero.btn2": "Посмотреть демо",
+        "hero.note": "Не банк. Слой поверх банка.",
+        "card.title": "Твоя карта. Твой дизайн. Твой номер.",
+        "card.subtitle": "Потяните карту мышью или пальцем, чтобы повернуть её в 3D",
+        "card.holder": "Владелец",
+        "card.selectDesign": "Выберите дизайн",
+        "card.changeNum": "Сменить номер",
+        "pillars.p1Title": "Смена номера в один тап",
+        "pillars.p1Desc": "Меняйте реквизиты карты мгновенно при малейшем подозрении на утечку данных.",
+        "pillars.p2Title": "Свой QR для приёма денег",
+        "pillars.p2Desc": "Персональный QR-код для мгновенных переводов без комиссий и сложных реквизитов.",
+        "pillars.p3Title": "AI-помощник",
+        "pillars.p3Desc": "Понимает разговорную речь, анализирует расходы и управляет подписками автоматически.",
+        "cardsFeature.title": "Полный контроль над картами",
+        "cardsFeature.subtitle": "Создавайте отдельные карты под каждую задачу за секунды.",
+        "cardsFeature.f1Title": "Смена номера за 3 секунды",
+        "cardsFeature.f1Desc": "После покупки на сомнительном сайте можно заменить номер карты в один клик. Старый номер перестанет работать.",
+        "cardsFeature.f2Title": "Кастомный дизайн",
+        "cardsFeature.f2Desc": "Загружайте свои фото, выбирайте градиенты или добавляйте уникальный никнейм на физическую карту.",
+        "cardsFeature.f3Title": "Виртуальные карты под каждую задачу",
+        "cardsFeature.f3Desc": "Отдельная карта для регулярных подписок, отдельная для разовых покупок, для ребёнка или для командных расходов с жёсткими лимитами.",
+        "qr.title": "Интерактивный QR-генератор",
+        "qr.subtitle": "Введите сумму и назначение, чтобы сгенерировать счёт",
+        "qr.labelSum": "Сумма (BYN)",
+        "qr.labelPurpose": "Назначение платежа",
+        "sub.title": "Автоматические подписки",
+        "sub.desc": "Создавайте регулярные платежи на любую сумму. Клиент подписывается один раз — деньги списываются автоматически. Уведомление за 3 дня до списания. Настройте приостановку в один клик.",
+        "sub.targetTitle": "Для кого:",
+        "sub.targetDesc": "Тренеры, онлайн-курсы, закрытые Telegram-каналы, аренда помещений.",
+        "ai.title": "AI-помощник",
+        "ai.subtitle": "Не чат-бот с кнопками. Собеседник, который понимает финансы.",
+        "ai.welcomeMsg": "Привет! Я слежу за вашими финансами. Чем могу помочь?",
+        "ai.btn1": '"Отложи 100 рублей"',
+        "ai.btn2": '"Какие подписки активны?"',
+        "ai.btn3": '"Сколько потрачено за неделю?"',
+        "ai.send": "Отправить",
+        "smart.title": "Умные финансовые функции",
+        "smart.subtitle": "Алгоритмы, которые экономят ваше время и деньги",
+        "smart.f1Title": "Кэшбэк реальными деньгами",
+        "smart.f1Desc": "Выбор до 4 категорий каждый месяц. Выплаты на счёт без баллов и бонусов.",
+        "smart.f2Title": "Автокатегоризация",
+        "smart.f2Desc": "Умное группирование расходов и мгновенные уведомления об аномальных тратах.",
+        "smart.f3Title": "Мониторинг рисков",
+        "smart.f3Desc": "Система предупреждает о подозрительных транзакциях и предлагает заблокировать карту в 1 клик.",
+        "smart.f4Title": "Голосовое управление",
+        "smart.f4Desc": "Переводите деньги и проверяйте баланс голосовыми командами.",
+        "payments.title": "Международные платежи и бизнес",
+        "payments.subtitle": "Лёгкая работа с зарубежными фриланс-платформами и факторингом",
+        "payments.p1Title": "Кросс-бордер приём",
+        "payments.p1Desc": "Прямое зачисление средств с Upwork, Fiverr, GitHub Sponsors и Payoneer.",
+        "payments.p2Title": "Факторинг по инвойсу",
+        "payments.p2Desc": "Оплата до 70% от суммы инвойса сразу. Фиксированная ставка 1,5%.",
+        "payments.p3Title": "BNPL Рассрочка",
+        "payments.p3Desc": "Оплата покупки четырьмя равными частями. Без процентов и комиссий.",
+        "invest.title": "Микро-инвестиции от 10 рублей",
+        "invest.desc": "Автоматическое округление каждой покупки. Сдача направляется в выбранный инвестиционный портфель. Услуги оказываются через лицензированного партнёра.",
+        "api.title": "Разрабатывайте поверх SHLYAKH API",
+        "api.desc": "Вебхуки на входящие платежи, SDK для TypeScript, Java и Python, тестовая песочница (sandbox) для разработчиков.",
+        "api.btn": "Читать документацию",
+        "how.title": "Как это работает",
+        "how.subtitle": "Всего 3 шага до начала использования",
+        "how.step1Title": "Скачайте приложение",
+        "how.step1Desc": "Доступно для iOS и Android. Регистрация по номеру телефона.",
+        "how.step2Title": "Подключите свой банк",
+        "how.step2Desc": "Безопасное соединение с любым белорусским банком через API.",
+        "how.step3Title": "Получите все функции",
+        "how.step3Desc": "Пользуйтесь новыми возможностями без смены своего банка.",
+        "sec.title": "Безопасность стандартов банкинга",
+        "sec.desc": "Подключение осуществляется через зашифрованное соединение. Ваши персональные данные не хранятся без вашего разрешения. Используется сквозное шифрование AES-256 и трехфакторная аутентификация.",
+        "pricing.title": "Тарифные планы",
+        "pricing.subtitle": "Прозрачные условия без скрытых комиссий",
+        "pricing.freeFor": "Для личного использования",
+        "pricing.proFor": "Для фрилансеров и профессионалов",
+        "pricing.teamFor": "Для малого бизнеса и команд",
+        "pricing.choose": "Выбрать",
+        "faq.title": "Часто задаваемые вопросы",
+        "faq.q1": "Как подключить свою карту или банк?",
+        "faq.a1": "В приложении ШЛЯХ выберите ваш банк из списка и авторизуйтесь через официальный API. Это занимает около 1 минуты.",
+        "faq.q2": "Безопасно ли это?",
+        "faq.a2": "Да. Мы используем шифрование банковского уровня. Мы не имеем прямого доступа к вашим паролям и основным средствам.",
+        "faq.q3": "Какие комиссии за транзакции?",
+        "faq.a3": "Переводы внутри сервиса — 0%. Эквайринг — 0,8%. Вывод с зарубежных платформ — от 0,8%.",
+        "faq.q4": "Как работают регулярные подписки?",
+        "faq.a4": "Вы создаёте ссылку или QR. Клиент подтверждает первый платёж, и далее деньги списываются автоматически с предварительным уведомлением.",
+        "faq.q5": "Есть ли физическая карта?",
+        "faq.a5": "Да, вы можете заказать физическую карту из металла или пластика с индивидуальным дизайном.",
+        "faq.q6": "Как работает факторинг?",
+        "faq.a6": "Вы загружаете выставленный инвойс, система проверяет контрагента и зачисляет до 70% суммы сразу под 1,5%.",
+        "cta.title": "Начните свой путь к своим деньгам",
+        "cta.subtitle": "Подключение занимает менее 2 минут. Без визитов в офис."
+      },
+      en: {
+        "nav.open": "Open Account",
+        "hero.title": "Your path to your money",
+        "hero.subtitle": "A new layer on top of your bank. Connect your existing bank account and unlock features not yet available in Belarusian banks.",
+        "hero.btn1": "Open Account",
+        "hero.btn2": "View Demo",
+        "hero.note": "Not a bank. A layer on top of your bank.",
+        "card.title": "Your Card. Your Design. Your Number.",
+        "card.subtitle": "Drag the card with mouse or finger to rotate in 3D",
+        "card.holder": "Cardholder",
+        "card.selectDesign": "Select Design",
+        "card.changeNum": "Change Number",
+        "pillars.p1Title": "One-Tap Number Change",
+        "pillars.p1Desc": "Instantly change card credentials at the slightest suspicion of data leaks.",
+        "pillars.p2Title": "Personal QR for Payments",
+        "pillars.p2Desc": "Personal QR code for instant transfers without fees or complicated requisites.",
+        "pillars.p3Title": "AI Assistant",
+        "pillars.p3Desc": "Understands natural language, analyzes expenses, and manages subscriptions automatically.",
+        "cardsFeature.title": "Full Card Control",
+        "cardsFeature.subtitle": "Create dedicated virtual cards for any purpose in seconds.",
+        "cardsFeature.f1Title": "Change Number in 3 Seconds",
+        "cardsFeature.f1Desc": "After purchasing on a suspicious website, switch card numbers with one click. The old number instantly deactivates.",
+        "cardsFeature.f2Title": "Custom Design",
+        "cardsFeature.f2Desc": "Upload your photos, pick gradients, or add a unique nickname to your physical card.",
+        "cardsFeature.f3Title": "Virtual Cards for Every Task",
+        "cardsFeature.f3Desc": "Separate cards for recurring subscriptions, single online buys, kids allowance, or team spending with strict limits.",
+        "qr.title": "Interactive QR Generator",
+        "qr.subtitle": "Enter amount and purpose to generate an instant invoice QR",
+        "qr.labelSum": "Amount (BYN)",
+        "qr.labelPurpose": "Payment Purpose",
+        "sub.title": "Automated Subscriptions",
+        "sub.desc": "Set up recurring payments easily. Customers subscribe once and payouts process automatically with 3-day advance notifications.",
+        "sub.targetTitle": "Ideal for:",
+        "sub.targetDesc": "Coaches, online courses, private Telegram channels, space rentals.",
+        "ai.title": "AI Assistant",
+        "ai.subtitle": "Not a rigid bot. A companion that understands personal finance.",
+        "ai.welcomeMsg": "Hello! I am tracking your finances. How can I help today?",
+        "ai.btn1": '"Save 100 BYN"',
+        "ai.btn2": '"Which subs are active?"',
+        "ai.btn3": '"Weekly spending summary?"',
+        "ai.send": "Send",
+        "smart.title": "Smart Financial Features",
+        "smart.subtitle": "Algorithms designed to save your time and money",
+        "smart.f1Title": "Real Cash Cashback",
+        "smart.f1Desc": "Choose up to 4 categories monthly. Direct cash payouts without useless bonus points.",
+        "smart.f2Title": "Auto Categorization",
+        "smart.f2Desc": "Intelligent expense grouping and instant alerts for anomalous spending.",
+        "smart.f3Title": "Risk Monitoring",
+        "smart.f3Desc": "Proactive detection of suspicious transactions with a 1-click card freeze prompt.",
+        "smart.f4Title": "Voice Controls",
+        "smart.f4Desc": "Transfer funds and review balances using natural voice commands.",
+        "payments.title": "Cross-Border & Business",
+        "payments.subtitle": "Seamless payouts from global freelance platforms and invoice factoring",
+        "payments.p1Title": "Cross-Border Ingestion",
+        "payments.p1Desc": "Direct settlement from Upwork, Fiverr, GitHub Sponsors, and Payoneer.",
+        "payments.p2Title": "Invoice Factoring",
+        "payments.p2Desc": "Receive up to 70% of invoice amount immediately at a fixed 1.5% fee.",
+        "payments.p3Title": "BNPL Installments",
+        "payments.p3Desc": "Split purchases into 4 equal installments with 0% interest.",
+        "invest.title": "Micro-Investments from 10 BYN",
+        "invest.desc": "Automatic purchase round-ups. Your spare change is directed into curated investment portfolios via licensed partners.",
+        "api.title": "Build on SHLYAKH API",
+        "api.desc": "Inbound payment webhooks, SDKs for TypeScript, Java, and Python, full sandbox environment.",
+        "api.btn": "Read Documentation",
+        "how.title": "How It Works",
+        "how.subtitle": "Just 3 simple steps to get started",
+        "how.step1Title": "Download App",
+        "how.step1Desc": "Available on iOS & Android. Quick registration via phone number.",
+        "how.step2Title": "Connect Your Bank",
+        "how.step2Desc": "Securely link your existing Belarusian bank via open API.",
+        "how.step3Title": "Enjoy Full Power",
+        "how.step3Desc": "Access next-gen features without changing your primary bank.",
+        "sec.title": "Banking-Grade Security",
+        "sec.desc": "Connections are encrypted end-to-end (AES-256) with 3-factor authentication. Personal data is never stored without explicit user consent.",
+        "pricing.title": "Pricing Plans",
+        "pricing.subtitle": "Transparent pricing without hidden fees",
+        "pricing.freeFor": "For personal use",
+        "pricing.proFor": "For freelancers & pros",
+        "pricing.teamFor": "For small business & teams",
+        "pricing.choose": "Select Plan",
+        "faq.title": "Frequently Asked Questions",
+        "faq.q1": "How do I connect my bank?",
+        "faq.a1": "Select your bank from the list inside the SHLYAKH app and authorize via official bank API. Takes less than a minute.",
+        "faq.q2": "Is it safe?",
+        "faq.a2": "Yes. We utilize bank-grade encryption. We never store or access your bank credentials or primary funds directly.",
+        "faq.q3": "What are the fees?",
+        "faq.a3": "Internal transfers are free (0%). Acquiring is 0.8%. Cross-border withdrawals start at 0.8%.",
+        "faq.q4": "How do subscriptions work?",
+        "faq.a4": "Generate a subscription link or QR. Clients authorize once, and future charges recur automatically.",
+        "faq.q5": "Is there a physical card?",
+        "faq.a5": "Yes, metal or plastic custom-designed physical cards are available for order.",
+        "faq.q6": "How does factoring work?",
+        "faq.a6": "Upload an open invoice; our system verifies the counterparty and advances up to 70% instantly at 1.5%.",
+        "cta.title": "Start your path to your money",
+        "cta.subtitle": "Setup takes under 2 minutes. No office visits required."
+      }
+    };
+
+    let currentLang = 'by';
+
+    function setLang(lang) {
+      currentLang = lang;
+      
+      // Update toggle buttons active styles
+      ['by', 'ru', 'en'].forEach(l => {
+        const btn = document.getElementById(`btn-${l}`);
+        if (l === lang) {
+          btn.className = 'px-3 py-1 rounded-full transition-all bg-white text-brand-dark shadow-sm font-bold';
+        } else {
+          btn.className = 'px-3 py-1 rounded-full transition-all hover:text-brand-dark';
+        }
+      });
+
+      // Update all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.innerText = translations[lang][key];
+        }
+      });
+    }
+
+    // === 3D CARD INTERACTION ===
+    const card = document.getElementById('card3d');
+    let isDragging = false;
+    let startX, startY;
+    let currentRotX = 0, currentRotY = 0;
+    let targetRotX = 0, targetRotY = 0;
+
+    function handleStart(x, y) {
+      isDragging = true;
+      startX = x;
+      startY = y;
+    }
+
+    function handleMove(x, y) {
+      if (!isDragging) return;
+      const deltaX = x - startX;
+      const deltaY = y - startY;
+
+      targetRotY += deltaX * 0.4;
+      targetRotX -= deltaY * 0.4;
+
+      // Limit vertical rotation angle
+      targetRotX = Math.max(-45, Math.min(45, targetRotX));
+
+      startX = x;
+      startY = y;
+    }
+
+    function handleEnd() {
+      isDragging = false;
+    }
+
+    // Mouse events
+    card.addEventListener('mousedown', (e) => handleStart(e.clientX, e.clientY));
+    window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+    window.addEventListener('mouseup', handleEnd);
+
+    // Touch events
+    card.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, e.touches[0].clientY));
+    window.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY));
+    window.addEventListener('touchend', handleEnd);
+
+    // Inertia & Animation Loop
+    function renderCard3D() {
+      currentRotX += (targetRotX - currentRotX) * 0.1;
+      currentRotY += (targetRotY - currentRotY) * 0.1;
+
+      // Auto rotation subtle drift when not dragging
+      if (!isDragging) {
+        targetRotY += 0.15;
+      }
+
+      card.style.transform = `rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg)`;
+      requestAnimationFrame(renderCard3D);
+    }
+    renderCard3D();
+
+    // Theme Switcher for Card
+    function changeTheme(themeName) {
+      card.className = `card-3d card-theme-${themeName} w-[320px] sm:w-[380px] h-[200px] sm:h-[240px] rounded-2xl p-6 relative shadow-2xl flex flex-col justify-between cursor-grab active:cursor-grabbing border`;
+    }
+
+    // Animated Card Number Change
+    function generateNewCardNumber() {
+      const numEl = document.getElementById('card-number');
+      numEl.style.opacity = '0';
+      setTimeout(() => {
+        const randPart1 = Math.floor(1000 + Math.random() * 9000);
+        const randPart2 = Math.floor(1000 + Math.random() * 9000);
+        numEl.innerText = `4532 •••• ${randPart1} ${randPart2}`;
+        numEl.style.opacity = '1';
+      }, 200);
+    }
+
+    // === CANVAS QR GENERATOR ===
+    function updateQR() {
+      const canvas = document.getElementById('qr-canvas');
+      const ctx = canvas.getContext('2d');
+      const amount = document.getElementById('qr-amount').value || '0';
+      const desc = document.getElementById('qr-desc').value || 'Payment';
+      
+      document.getElementById('qr-text').innerText = `shlyakh.by/pay/${amount}BYN`;
+
+      canvas.width = 160;
+      canvas.height = 160;
+      ctx.clearRect(0, 0, 160, 160);
+
+      // Draw minimal styling QR simulation
+      const size = 160;
+      const cells = 16;
+      const cellSize = size / cells;
+
+      ctx.fillStyle = '#0A0A0A';
+
+      // Seed pseudo-random matrix based on input string
+      const str = amount + desc;
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+
+      for (let r = 0; r < cells; r++) {
+        for (let c = 0; c < cells; c++) {
+          // Finder Patterns (Corners)
+          if ((r < 4 && c < 4) || (r < 4 && c >= cells - 4) || (r >= cells - 4 && c < 4)) {
+            if (r === 0 || r === 3 || c === 0 || c === 3 || r === cells - 1 || r === cells - 4 || c === cells - 1 || c === cells - 4 || (r >= 1 && r <= 2 && c >= 1 && c <= 2) || (r >= 1 && r <= 2 && c >= cells - 3 && c <= cells - 2) || (r >= cells - 3 && r <= cells - 2 && c >= 1 && c <= 2)) {
+              ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+            }
+          } else {
+            // Data pattern
+            const val = Math.abs(Math.sin(hash + r * 13 + c * 37));
+            if (val > 0.45) {
+              ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
+            }
+          }
+        }
+      }
+    }
+
+    // === AI ASSISTANT DEMO CHAT ===
+    function sendAiPrompt(type) {
+      const chatBox = document.getElementById('chat-box');
+      let userMsg = "";
+      let aiReply = "";
+
+      if (type === 'save') {
+        userMsg = currentLang === 'en' ? "Save 100 BYN" : (currentLang === 'ru' ? "Отложи 100 рублей" : "Адкладзі 100 рублёў");
+        aiReply = currentLang === 'en' ? "Done! 100 BYN transferred to your high-yield 'Savings' piggy bank." : (currentLang === 'ru' ? "Готово! 100 BYN переведены в вашу накопительную копилку." : "Гатова! 100 BYN переведзены ў вашу накапляльную скарбонку.");
+      } else if (type === 'subs') {
+        userMsg = currentLang === 'en' ? "Which subs are active?" : (currentLang === 'ru' ? "Какие подписки активны?" : "Якія падпіскі актыўныя?");
+        aiReply = currentLang === 'en' ? "You have 3 active subs: Spotify (10 BYN), Gym (60 BYN), Cloud (5 BYN). Total: 75 BYN/mo." : (currentLang === 'ru' ? "У вас 3 активные подписки: Spotify (10 BYN), Зал (60 BYN), Облако (5 BYN). Итого: 75 BYN/мес." : "У вас 3 актыўныя падпіскі: Spotify (10 BYN), Зала (60 BYN), Воблака (5 BYN). Разам: 75 BYN/мес.");
+      } else if (type === 'spend') {
+        userMsg = currentLang === 'en' ? "Weekly spending summary?" : (currentLang === 'ru' ? "Сколько потрачено за неделю?" : "Колькі выдаткавана за тыдзень?");
+        aiReply = currentLang === 'en' ? "Total spent this week: 240 BYN. Top category: Groceries (120 BYN)." : (currentLang === 'ru' ? "Всего потрачено за неделю: 240 BYN. Топ категория: Продукты (120 BYN)." : "Усяго выдаткавана за тыдзень: 240 BYN. Топ катэгорыя: Прадукты (120 BYN).");
+      }
+
+      appendChat(userMsg, aiReply);
+    }
+
+    function handleAiSubmit() {
+      const input = document.getElementById('ai-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const aiReply = currentLang === 'en' ? `Processed command: "${val}". Status: Executed.` : (currentLang === 'ru' ? `Обработана команда: "${val}". Статус: Выполнено.` : `Апрацавана каманда: "${val}". Статус: Выканана.`);
+      appendChat(val, aiReply);
+      input.value = "";
+    }
+
+    function appendChat(userText, aiText) {
+      const chatBox = document.getElementById('chat-box');
+
+      // User Message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'flex justify-end';
+      userDiv.innerHTML = `<div class="bg-brand-dark text-white p-3 rounded-2xl max-w-[80%]">${userText}</div>`;
+      chatBox.appendChild(userDiv);
+
+      // AI Response
+      setTimeout(() => {
+        const aiDiv = document.createElement('div');
+        aiDiv.className = 'flex gap-3';
+        aiDiv.innerHTML = `
+          <div class="w-7 h-7 rounded-full bg-brand-dark text-white text-xs flex items-center justify-center font-bold">AI</div>
+          <div class="bg-zinc-100 p-3 rounded-2xl max-w-[80%] text-zinc-800 border border-zinc-200">${aiText}</div>
+        `;
+        chatBox.appendChild(aiDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 300);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Initialize Page
+    document.addEventListener('DOMContentLoaded', () => {
+      setLang('by');
+      updateQR();
+    });
+  </script>
+</body>
+</html>
